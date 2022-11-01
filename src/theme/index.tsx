@@ -12,12 +12,6 @@ import { useSelector } from "react-redux";
 type Props = {
   children: ReactNode;
 };
-declare module "@mui/material/styles/createPalette" {
-  interface TypeBackground {
-    header: string;
-    footer: string;
-  }
-}
 
 export default function ThemeProvider({ children }: Props) {
   const { mode } = useSelector((state: RootState) => state.Setting);

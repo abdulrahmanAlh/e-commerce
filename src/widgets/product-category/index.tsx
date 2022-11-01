@@ -1,12 +1,5 @@
 import { FC } from "react";
-import {
-  Avatar,
-  IconButton,
-  ListItemAvatar,
-  Slider,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";

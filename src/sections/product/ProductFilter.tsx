@@ -11,6 +11,7 @@ import {
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import PriceSlider from "widgets/price-slider";
 import ProductCategory from "widgets/product-category";
+import ProductListSummary from "./ProductListSummary";
 
 export interface ProductFilterProps {}
 
@@ -31,6 +32,19 @@ const ProductFilter: FC<ProductFilterProps> = () => {
       </Box>
       <PriceSlider />
       <ProductCategory />
+      <ProductListSummary
+        title="Featured Product"
+        products={[
+          {
+            title: "Tropical Playsuit",
+            category: "",
+            id: 1,
+            image: "https://picsum.photos/400",
+            description: "",
+            price: "$99",
+          },
+        ]}
+      />
     </Stack>
   );
 };

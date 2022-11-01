@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Button, IconButton, Paper, Stack } from "@mui/material";
+import { Box, Button, Drawer, IconButton, Paper, Stack } from "@mui/material";
 import { Container } from "@mui/system";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
@@ -12,12 +12,57 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import ProductListSummary from "sections/product/ProductListSummary";
 export interface HeaderProps {}
 const pages = ["Shop", "Promo", "About", "Blog"];
 
 export const Header: FC<HeaderProps> = () => {
+  const [cartDrawer, setCartDrawer] = useState<boolean>();
+
+  const toggleCartDrawer = () => {
+    setCartDrawer(!cartDrawer);
+  };
+  const [wishlistDrawer, setWishlistDrawer] = useState<boolean>();
+
+  const toggleWishlistDrawer = () => {
+    setWishlistDrawer(!wishlistDrawer);
+  };
   return (
     <>
+      <Drawer anchor={"right"} open={cartDrawer} onClose={toggleCartDrawer}>
+        <ProductListSummary
+          title="Carts"
+          products={[
+            {
+              title: "Tropical Playsuit",
+              category: "",
+              id: 1,
+              image: "https://picsum.photos/400",
+              description: "",
+              price: "$99",
+            },
+          ]}
+        />
+      </Drawer>
+      <Drawer
+        anchor={"right"}
+        open={wishlistDrawer}
+        onClose={toggleWishlistDrawer}
+      >
+        <ProductListSummary
+          title="Wishlist"
+          products={[
+            {
+              title: "Tropical Playsuit",
+              category: "",
+              id: 1,
+              image: "https://picsum.photos/400",
+              description: "",
+              price: "$99",
+            },
+          ]}
+        />
+      </Drawer>
       <AppBar position="sticky">
         <Toolbar
           sx={{
@@ -34,10 +79,20 @@ export const Header: FC<HeaderProps> = () => {
               <Typography variant="h4" fontWeight={"700   "} color={"primary"}>
                 Dealerz.
               </Typography>
-              <Stack direction={"row"} spacing={2}>
-                <Button startIcon={<CallOutlinedIcon />}>Call Center</Button>
-                <Button startIcon={<LocalShippingOutlinedIcon />}>
-                  Shipping & Returns
+              <Stack direction={"row"} spacing={1}>
+                <Button
+                  startIcon={<CallOutlinedIcon />}
+                  sx={{ display: { xs: "none", sm: "flex" } }}
+                >
+                  <Box>Call Center</Box>
+                </Button>
+                <Button
+                  startIcon={<LocalShippingOutlinedIcon />}
+                  sx={{ display: { xs: "none", sm: "flex" } }}
+                >
+                  <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                    Shipping & Returns
+                  </Box>
                 </Button>
               </Stack>
             </Stack>
@@ -63,7 +118,15 @@ export const Header: FC<HeaderProps> = () => {
                   </Button>
                 ))}
               </Stack>
-              <Paper sx={{ py: 1, px: 3, width: "100%", maxWidth: 400 }}>
+              <Paper
+                sx={{
+                  py: 1,
+                  px: 3,
+                  width: "100%",
+                  maxWidth: 400,
+                  display: { xs: "none", md: "block" },
+                }}
+              >
                 <Stack direction={"row"} justifyContent="space-between">
                   <InputBase
                     id="header-search"
@@ -74,11 +137,16 @@ export const Header: FC<HeaderProps> = () => {
                 </Stack>
               </Paper>
 
-              <Stack direction={"row"} spacing={1}>
+              <Stack
+                direction={"row"}
+                spacing={1}
+                sx={{ display: { xs: "none", md: "block" } }}
+              >
                 <IconButton
                   size="medium"
                   edge="start"
                   sx={{ color: "text.primary" }}
+                  onClick={toggleWishlistDrawer}
                 >
                   <FavoriteBorderOutlinedIcon />
                 </IconButton>
@@ -86,6 +154,7 @@ export const Header: FC<HeaderProps> = () => {
                   size="medium"
                   edge="start"
                   sx={{ color: "text.primary" }}
+                  onClick={toggleCartDrawer}
                 >
                   <ShoppingCartOutlinedIcon />
                 </IconButton>

@@ -18,8 +18,6 @@ export const LightTheme = createTheme({
     background: {
       default: "#E5E5E5",
       paper: "#ffffff",
-      header: "#ffffff",
-      footer: "#ffffff",
     },
     // background:{default}
   },
@@ -63,6 +61,14 @@ export const LightTheme = createTheme({
         root: sx({
           py: 0,
           px: 1,
+        }),
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: sx({
+          px: 4,
+          py: 2,
         }),
       },
     },
