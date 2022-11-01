@@ -46,6 +46,26 @@ export const LightTheme = createTheme({
         }),
       },
     },
+    MuiSlider: {
+      styleOverrides: {
+        root: sx({
+          p: 0,
+          color: "text.secondary",
+        }),
+        thumb: sx({
+          width: 8,
+          height: 8,
+        }),
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: sx({
+          py: 0,
+          px: 1,
+        }),
+      },
+    },
   },
   shape: {
     borderRadius: 6,

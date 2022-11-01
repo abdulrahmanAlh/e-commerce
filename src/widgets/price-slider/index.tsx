@@ -1,11 +1,23 @@
 import { FC } from "react";
-import { Slider, Stack } from "@mui/material";
-
+import { IconButton, Slider, Stack, Typography } from "@mui/material";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 export interface PriceSliderProps {}
 
 const PriceSlider: FC<PriceSliderProps> = () => {
   return (
-    <Stack spacing={5}>
+    <Stack spacing={1}>
+      <Stack
+        direction={"row"}
+        justifyContent="space-between"
+        alignItems={"center"}
+      >
+        <Typography fontWeight={800} variant="h6">
+          Price
+        </Typography>
+        <IconButton size="medium" edge="start" sx={{ color: "text.primary" }}>
+          <FilterAltOutlinedIcon />
+        </IconButton>
+      </Stack>
       <Slider
         size="small"
         defaultValue={[0, 1000]}
@@ -13,6 +25,14 @@ const PriceSlider: FC<PriceSliderProps> = () => {
         aria-label="Default"
         valueLabelDisplay="auto"
       />
+      <Stack
+        direction={"row"}
+        justifyContent="space-between"
+        alignItems={"center"}
+      >
+        <Typography>Range</Typography>
+        <Typography>$5-$20</Typography>
+      </Stack>
     </Stack>
   );
 };

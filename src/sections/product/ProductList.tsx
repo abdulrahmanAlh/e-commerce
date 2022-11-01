@@ -8,13 +8,13 @@ export interface ProductListProps {}
 const ProductList: FC<ProductListProps> = () => {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} lg={4}>
+      <Grid item xs={12} sm={6} lg={4}>
         <ProductCard />
       </Grid>
-      <Grid item xs={12} lg={4}>
+      <Grid item xs={12} sm={6} lg={4}>
         <ProductCard />
       </Grid>
-      <Grid item xs={12} lg={4}>
+      <Grid item xs={12} sm={6} lg={4}>
         <ProductCard />
       </Grid>
       <Grid item xs={12}>

@@ -9,6 +9,8 @@ import {
   Stack,
 } from "@mui/material";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
+import PriceSlider from "widgets/price-slider";
+import ProductCategory from "widgets/product-category";
 
 export interface ProductFilterProps {}
 
@@ -21,12 +23,14 @@ const ProductFilter: FC<ProductFilterProps> = () => {
         <Stack direction={"row"} justifyContent="space-between">
           <InputBase
             id="header-search"
-            placeholder="Search what you need"
+            placeholder="Search products"
             sx={{ width: "100%" }}
           />
           <SearchOutlined sx={{ color: "text.secondary" }} />
         </Stack>
       </Box>
+      <PriceSlider />
+      <ProductCategory />
     </Stack>
   );
 };
