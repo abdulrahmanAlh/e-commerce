@@ -33,7 +33,7 @@ export const LightTheme = createTheme({
     //   }),
     // },
     ...inputOverride,
-    // ...ratingOverride,
+    ...ratingOverride,
     ...buttonOverride,
     // ...dividerOverride,
     // ...paperOverride,
