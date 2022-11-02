@@ -1,14 +1,18 @@
 import { FC, useState } from "react";
 import { IconButton, Slider, Stack, Typography } from "@mui/material";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-export interface PriceSliderProps {}
+
+export interface PriceSliderProps {
+  onChangeRange?: (range: number[]) => void;
+}
 
 const initValue = [0, 1000];
 
-const PriceSlider: FC<PriceSliderProps> = () => {
+const PriceSlider: FC<PriceSliderProps> = ({ onChangeRange }) => {
   const [priceRange, setPriceRange] = useState<number[]>(initValue);
   const handleChange = (event: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
+    onChangeRange && onChangeRange(newValue as number[]);
   };
   return (
     <Stack spacing={1}>

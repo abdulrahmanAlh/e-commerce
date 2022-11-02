@@ -6,7 +6,7 @@ import ProductCategory from "widgets/product-category";
 import ProductListSummary from "./ProductListSummary";
 import { useAppDispatch, useAppSelector } from "core/store";
 import { FetchCategories } from "core/redux/category";
-import { FetchProducts } from "core/redux/product";
+import { FetchProducts, filterProducts } from "core/redux/product";
 import { Maybe } from "types";
 
 export interface ProductFilterProps {}
@@ -22,10 +22,20 @@ const ProductFilter: FC<ProductFilterProps> = () => {
   const handleActiveCategory = (name: string) => {
     dispatch(FetchProducts(name));
   };
+
   const handleDeactiveCategory = (name: string) => {
     dispatch(FetchProducts());
   };
-
+  //Filter by price
+  const handleChangeRange = (range: number[]) => {
+    dispatch(filterProducts({ price: range }));
+  };
+  //Filter by title
+  const handleChangeSearch = (name: string) => {
+    if (name === "") {
+      dispatch(FetchProducts());
+    } else dispatch(filterProducts({ name }));
+  };
   return (
     <Stack spacing={5}>
       <Box
@@ -36,11 +46,12 @@ const ProductFilter: FC<ProductFilterProps> = () => {
             id="header-search"
             placeholder="Search products"
             sx={{ width: "100%" }}
+            onChange={(e) => handleChangeSearch(e.currentTarget.value)}
           />
           <SearchOutlined sx={{ color: "text.secondary" }} />
         </Stack>
       </Box>
-      <PriceSlider />
+      <PriceSlider onChangeRange={handleChangeRange} />
       <ProductCategory
         onActiceCategory={handleActiveCategory}
         onDeacticeCategory={handleDeactiveCategory}

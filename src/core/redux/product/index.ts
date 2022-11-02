@@ -42,6 +42,7 @@ const ProductSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+
     addToWishlist: (state, action: PayloadAction<Product>) => {
       const isExist = state.wishlist.find(
         (item) => item.id === action.payload.id
@@ -57,6 +58,7 @@ const ProductSlice = createSlice({
         state.products = products;
       }
     },
+
     removeFromWishlist: (state, { payload }: PayloadAction<number>) => {
       state.wishlist = state.wishlist.filter((item) => payload !== item.id);
       let index = state.products.findIndex((product) => product.id === payload);
@@ -95,6 +97,18 @@ const ProductSlice = createSlice({
 
       state.cart = updateCart;
     },
+    filterProducts(
+      state,
+      {
+        payload: { name, price },
+      }: PayloadAction<{ price?: number[]; name?: string }>
+    ) {
+      state.products = state.products.filter(
+        (product) =>
+          (!price || (product.price > price[0] && product.price < price[1])) &&
+          (!name || product.title.includes(name))
+      );
+    },
   },
 });
 
@@ -108,6 +122,7 @@ export const {
   deleteCart,
   addToWishlist,
   removeFromWishlist,
+  filterProducts,
 } = ProductSlice.actions;
 
 export const FetchProducts =
