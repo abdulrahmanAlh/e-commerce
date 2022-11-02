@@ -1,17 +1,47 @@
 import { FC } from "react";
 import {
+  Box,
   Card,
   CardContent,
   CardMedia,
+  IconButton,
   Rating,
   Stack,
   Typography,
 } from "@mui/material";
+import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 export interface ProductCardProps {}
 
 const ProductCard: FC<ProductCardProps> = () => {
   return (
     <Card>
+      <Box sx={{ position: "relative" }}>
+        <IconButton
+          sx={{
+            top: 10,
+            right: 8,
+            zIndex: 20,
+            position: "absolute",
+            textTransform: "uppercase",
+            color: "white",
+          }}
+        >
+          <AddShoppingCartOutlinedIcon />
+        </IconButton>
+        <IconButton
+          sx={{
+            top: 10,
+            right: 40,
+            zIndex: 20,
+            position: "absolute",
+            textTransform: "uppercase",
+            color: "white",
+          }}
+        >
+          <FavoriteBorderIcon />
+        </IconButton>
+      </Box>
       <CardMedia
         component="img"
         height="200"
