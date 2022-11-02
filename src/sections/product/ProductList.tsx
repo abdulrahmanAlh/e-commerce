@@ -7,6 +7,7 @@ import { Product } from "types";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useAppDispatch } from "core/store";
 import { addCart, addToWishlist, removeFromWishlist } from "core/redux/product";
+import { activeAlert } from "utils/helpers/alert";
 export interface ProductListProps {
   products: Product[];
   isLoading?: boolean;
@@ -22,16 +23,32 @@ const ProductList: FC<ProductListProps> = ({
   isLoadingMore,
 }) => {
   const dispatch = useAppDispatch();
+
   const handleClickMore = () => {
     onClickMore && onClickMore();
   };
+
   const handleClickCart = (product: Product) => {
+    activeAlert({
+      message: "Added successfully to cart",
+      severity: "success",
+    });
     dispatch(addCart({ ...product, quantity: 1 }));
   };
+
   const handleClickLike = (product: Product) => {
     if (product.liked) {
+      activeAlert({
+        message: "Deleted successfully from wishlist",
+        severity: "success",
+      });
+
       dispatch(removeFromWishlist(product.id));
     } else {
+      activeAlert({
+        message: "Added successfully to wishlist",
+        severity: "success",
+      });
       dispatch(addToWishlist(product));
     }
   };

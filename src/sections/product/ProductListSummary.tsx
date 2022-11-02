@@ -6,11 +6,13 @@ import ProductSummary from "./ProductSummary";
 export interface ProductListSummaryProps {
   title?: string;
   products: (Product | Cart)[];
+  onDelete?: (id: number) => void;
 }
 
 const ProductListSummary: FC<ProductListSummaryProps> = ({
   title,
   products,
+  onDelete,
 }) => {
   return (
     <Stack spacing={2} sx={{ minWidth: 200 }}>
@@ -19,9 +21,13 @@ const ProductListSummary: FC<ProductListSummaryProps> = ({
           {title}
         </Typography>
       )}
-      <Stack spacing={1}>
+      <Stack spacing={2}>
         {products.map((product) => (
-          <ProductSummary key={product.id} product={product} />
+          <ProductSummary
+            onDelete={onDelete}
+            key={product.id}
+            product={product}
+          />
         ))}
       </Stack>
     </Stack>

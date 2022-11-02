@@ -13,30 +13,46 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ProductListSummary from "sections/product/ProductListSummary";
-import { useAppSelector } from "core/store";
+import { useAppDispatch, useAppSelector } from "core/store";
 import Badge from "@mui/material/Badge";
+import { useDispatch } from "react-redux";
+import { deleteCart, removeFromWishlist } from "core/redux/product";
 
 export interface HeaderProps {}
 
 const pages = ["Shop", "Promo", "About", "Blog"];
 
 export const Header: FC<HeaderProps> = () => {
+  const dispatch = useAppDispatch();
   const { cart, wishlist } = useAppSelector((state) => state.Product);
 
   const [cartDrawer, setCartDrawer] = useState<boolean>();
 
+  const [wishlistDrawer, setWishlistDrawer] = useState<boolean>();
+
   const toggleCartDrawer = () => {
     setCartDrawer(!cartDrawer);
   };
-  const [wishlistDrawer, setWishlistDrawer] = useState<boolean>();
 
   const toggleWishlistDrawer = () => {
     setWishlistDrawer(!wishlistDrawer);
   };
+
+  const handleDeleteCart = (id: number) => {
+    dispatch(deleteCart(id));
+  };
+  const handleDeleteFromWishlist = (id: number) => {
+    dispatch(removeFromWishlist(id));
+  };
+
   return (
     <>
       <Drawer anchor={"right"} open={cartDrawer} onClose={toggleCartDrawer}>
-        <ProductListSummary title="Carts" products={cart} />
+        <ProductListSummary
+          onDelete={handleDeleteCart}
+          title="Carts"
+          products={cart}
+        />
       </Drawer>
 
       <Drawer
@@ -44,7 +60,11 @@ export const Header: FC<HeaderProps> = () => {
         open={wishlistDrawer}
         onClose={toggleWishlistDrawer}
       >
-        <ProductListSummary title="Wishlist" products={wishlist} />
+        <ProductListSummary
+          onDelete={handleDeleteFromWishlist}
+          title="Wishlist"
+          products={wishlist}
+        />
       </Drawer>
 
       <AppBar position="sticky">
