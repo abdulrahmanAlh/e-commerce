@@ -1,10 +1,11 @@
 import { experimental_sx as sx } from "@mui/material/styles";
 
-export const dividerOverride = {
-  MuiDivider: {
+export const appBarOverride: any = {
+  MuiAppBar: {
     styleOverrides: {
       root: sx({
-        borderColor: "text.secondary",
+        boxShadow: "none",
+        bgcolor: "background.default",
       }),
     },
   },

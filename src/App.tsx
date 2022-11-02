@@ -6,9 +6,11 @@ import { Alert } from "@mui/lab";
 import { disactiveAlert } from "utils/helpers/alert";
 
 function App() {
+  //Get snackbar changes
   const {
     alert: { message, severity, active },
   } = useAppSelector((state) => state.Setting);
+
   return (
     <ThemeProvider>
       <Snackbar

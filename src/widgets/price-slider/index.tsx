@@ -10,10 +10,12 @@ const initValue = [0, 1000];
 
 const PriceSlider: FC<PriceSliderProps> = ({ onChangeRange }) => {
   const [priceRange, setPriceRange] = useState<number[]>(initValue);
+
   const handleChange = (event: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
     onChangeRange && onChangeRange(newValue as number[]);
   };
+
   return (
     <Stack spacing={1}>
       <Stack

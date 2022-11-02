@@ -10,13 +10,13 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import InputBase from "@mui/material/InputBase";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ProductListSummary from "sections/product/ProductListSummary";
 import { useAppDispatch, useAppSelector } from "core/store";
 import Badge from "@mui/material/Badge";
-import { useDispatch } from "react-redux";
 import { deleteCart, removeFromWishlist } from "core/redux/product";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
+import { toggleMode } from "core/redux/setting";
 
 export interface HeaderProps {}
 
@@ -25,6 +25,7 @@ const pages = ["Shop", "Promo", "About", "Blog"];
 export const Header: FC<HeaderProps> = () => {
   const dispatch = useAppDispatch();
   const { cart, wishlist } = useAppSelector((state) => state.Product);
+  const { mode } = useAppSelector((state) => state.Setting);
 
   const [cartDrawer, setCartDrawer] = useState<boolean>();
 
@@ -45,6 +46,10 @@ export const Header: FC<HeaderProps> = () => {
     dispatch(removeFromWishlist(id));
   };
 
+  const toggleDarkMode = (checked: boolean) => {
+    // setDarkMode(checked);
+    dispatch(toggleMode());
+  };
   return (
     <>
       <Drawer anchor={"right"} open={cartDrawer} onClose={toggleCartDrawer}>
@@ -106,7 +111,7 @@ export const Header: FC<HeaderProps> = () => {
         <Toolbar
           sx={{
             bgcolor: "background.default",
-            my: 1,
+            py: 1,
           }}
         >
           <Container maxWidth={"xl"}>
@@ -167,13 +172,12 @@ export const Header: FC<HeaderProps> = () => {
                     <ShoppingCartOutlinedIcon />
                   </Badge>
                 </IconButton>
-                <IconButton
-                  size="medium"
-                  edge="start"
-                  sx={{ color: "text.primary" }}
-                >
-                  <PersonOutlineOutlinedIcon />
-                </IconButton>
+                <DarkModeSwitch
+                  style={{ marginTop: "0.6rem" }}
+                  checked={mode === "dark"}
+                  onChange={toggleDarkMode}
+                  size={20}
+                />
                 <IconButton
                   size="medium"
                   edge="start"

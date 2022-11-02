@@ -1,11 +1,11 @@
 import { experimental_sx as sx } from "@mui/material/styles";
 
-export const paperOverride = {
-  MuiPaper: {
+export const listItemButtonOverride: any = {
+  MuiListItemButton: {
     styleOverrides: {
       root: sx({
-        p: 4,
-        boxShadow: "0px 4px 20px rgb(0 0 0 / 25%)",
+        py: 0,
+        px: 1,
       }),
     },
   },
