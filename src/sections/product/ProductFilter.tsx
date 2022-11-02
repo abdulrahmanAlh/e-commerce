@@ -12,6 +12,7 @@ import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import PriceSlider from "widgets/price-slider";
 import ProductCategory from "widgets/product-category";
 import ProductListSummary from "./ProductListSummary";
+import { Product } from "types";
 
 export interface ProductFilterProps {}
 
@@ -41,7 +42,7 @@ const ProductFilter: FC<ProductFilterProps> = () => {
             id: 1,
             image: "https://picsum.photos/400",
             description: "",
-            price: "$99",
+            price: 99,
           },
         ]}
       />

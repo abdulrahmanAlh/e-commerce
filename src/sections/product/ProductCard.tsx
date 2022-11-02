@@ -11,9 +11,20 @@ import {
 } from "@mui/material";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-export interface ProductCardProps {}
+import { Product } from "types";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+export interface ProductCardProps {
+  product: Product;
+  onClickLike?: (product: Product) => void;
+  onClickCart?: (product: Product) => void;
+}
 
-const ProductCard: FC<ProductCardProps> = () => {
+const ProductCard: FC<ProductCardProps> = ({
+  product,
+  onClickLike,
+  onClickCart,
+}) => {
+  const { title, price, image, liked } = product;
   return (
     <Card>
       <Box sx={{ position: "relative" }}>
@@ -26,6 +37,7 @@ const ProductCard: FC<ProductCardProps> = () => {
             textTransform: "uppercase",
             color: "white",
           }}
+          onClick={() => onClickCart && onClickCart(product)}
         >
           <AddShoppingCartOutlinedIcon />
         </IconButton>
@@ -38,25 +50,32 @@ const ProductCard: FC<ProductCardProps> = () => {
             textTransform: "uppercase",
             color: "white",
           }}
+          onClick={() => onClickLike && onClickLike(product)}
         >
-          <FavoriteBorderIcon />
+          {!liked ? <FavoriteBorderIcon /> : <FavoriteIcon />}
         </IconButton>
       </Box>
-      <CardMedia
-        component="img"
-        height="200"
-        image="https://picsum.photos/400"
-      />
+      <CardMedia component="img" height="200" image={image} />
       <CardContent>
         <Stack alignItems={"center"} spacing={1}>
-          <Typography variant="h6" fontWeight={700}>
-            Urbano Jacket
+          <Typography
+            variant="h6"
+            fontWeight={700}
+            sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              width: "100%",
+              textOverflow: "ellipsis",
+              textAlign: "center",
+            }}
+          >
+            {title}
           </Typography>
           <Rating name="read-only" value={4} readOnly />
-          <Typography variant="body1" sx={{ color: "text.secondary" }}>
+          {/* <Typography variant="body1" sx={{ color: "text.secondary" }}>
             watchmenow
-          </Typography>
-          <Typography color="primary">$99</Typography>
+          </Typography> */}
+          <Typography color="primary">${price}</Typography>
         </Stack>
       </CardContent>
     </Card>

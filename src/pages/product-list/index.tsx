@@ -2,9 +2,21 @@ import { FC, useEffect } from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import ProductList from "sections/product/ProductList";
 import ProductFilter from "sections/product/ProductFilter";
+import { useDispatch } from "react-redux";
+import { FetchMoreProducts, FetchProducts } from "core/redux/product";
+import { useAppDispatch, useAppSelector } from "core/store";
 export interface ProductListPageProps {}
 
 const ProductListPage: FC<ProductListPageProps> = () => {
+  const dispatch = useAppDispatch();
+  const { products, isLoading, isLoadingMore } = useAppSelector(
+    (state) => state.Product
+  );
+
+  useEffect(() => {
+    dispatch(FetchProducts());
+  }, []);
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.permissions
@@ -30,13 +42,22 @@ const ProductListPage: FC<ProductListPageProps> = () => {
     }
   }, []);
 
+  const handleClickMore = () => {
+    dispatch(FetchMoreProducts());
+  };
+
   return (
     <Grid container spacing={5}>
       <Grid item md={3} xs={12}>
         <ProductFilter />
       </Grid>
       <Grid item md={9} xs={12}>
-        <ProductList />
+        <ProductList
+          onClickMore={handleClickMore}
+          products={products}
+          isLoadingMore={isLoadingMore}
+          isLoading={isLoading}
+        />
       </Grid>
     </Grid>
   );

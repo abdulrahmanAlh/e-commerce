@@ -1,16 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AlertSetting } from "types";
 
 const isLightMode = localStorage.getItem("mode")
   ? localStorage.getItem("mode") === "light"
   : true;
 
 interface InitialState {
+  alert: AlertSetting;
+
   direction: "rtl" | "ltr";
   mode: "dark" | "light";
   lang: string;
 }
 
 let initialState: InitialState = {
+  alert: {
+    active: false,
+    severity: "success",
+    message: "success",
+  },
   direction: "ltr",
   mode: isLightMode ? "light" : "dark",
   lang: "en",
@@ -20,6 +28,12 @@ const KycSlice = createSlice({
   name: "Setting",
   initialState,
   reducers: {
+    openAlert: (state, { payload }: PayloadAction<AlertSetting>) => {
+      state.alert = { ...payload, active: true };
+    },
+    closeAlert: (state) => {
+      state.alert.active = false;
+    },
     setDirction: (state, { payload }) => {
       state.direction = payload;
     },
@@ -33,6 +47,7 @@ const KycSlice = createSlice({
   },
 });
 
-export const { setDirction, toggleMode, setLang } = KycSlice.actions;
+export const { setDirction, toggleMode, setLang, openAlert, closeAlert } =
+  KycSlice.actions;
 
 export default KycSlice.reducer;

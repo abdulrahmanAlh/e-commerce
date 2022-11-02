@@ -13,10 +13,16 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ProductListSummary from "sections/product/ProductListSummary";
+import { useAppSelector } from "core/store";
+import Badge from "@mui/material/Badge";
+
 export interface HeaderProps {}
+
 const pages = ["Shop", "Promo", "About", "Blog"];
 
 export const Header: FC<HeaderProps> = () => {
+  const { cart, wishlist } = useAppSelector((state) => state.Product);
+
   const [cartDrawer, setCartDrawer] = useState<boolean>();
 
   const toggleCartDrawer = () => {
@@ -30,39 +36,17 @@ export const Header: FC<HeaderProps> = () => {
   return (
     <>
       <Drawer anchor={"right"} open={cartDrawer} onClose={toggleCartDrawer}>
-        <ProductListSummary
-          title="Carts"
-          products={[
-            {
-              title: "Tropical Playsuit",
-              category: "",
-              id: 1,
-              image: "https://picsum.photos/400",
-              description: "",
-              price: "$99",
-            },
-          ]}
-        />
+        <ProductListSummary title="Carts" products={cart} />
       </Drawer>
+
       <Drawer
         anchor={"right"}
         open={wishlistDrawer}
         onClose={toggleWishlistDrawer}
       >
-        <ProductListSummary
-          title="Wishlist"
-          products={[
-            {
-              title: "Tropical Playsuit",
-              category: "",
-              id: 1,
-              image: "https://picsum.photos/400",
-              description: "",
-              price: "$99",
-            },
-          ]}
-        />
+        <ProductListSummary title="Wishlist" products={wishlist} />
       </Drawer>
+
       <AppBar position="sticky">
         <Toolbar
           sx={{
@@ -98,6 +82,7 @@ export const Header: FC<HeaderProps> = () => {
             </Stack>
           </Container>
         </Toolbar>
+
         <Toolbar
           sx={{
             bgcolor: "background.default",
@@ -148,7 +133,9 @@ export const Header: FC<HeaderProps> = () => {
                   sx={{ color: "text.primary" }}
                   onClick={toggleWishlistDrawer}
                 >
-                  <FavoriteBorderOutlinedIcon />
+                  <Badge badgeContent={wishlist.length} color="primary">
+                    <FavoriteBorderOutlinedIcon />
+                  </Badge>
                 </IconButton>
                 <IconButton
                   size="medium"
@@ -156,7 +143,9 @@ export const Header: FC<HeaderProps> = () => {
                   sx={{ color: "text.primary" }}
                   onClick={toggleCartDrawer}
                 >
-                  <ShoppingCartOutlinedIcon />
+                  <Badge badgeContent={cart.length} color="primary">
+                    <ShoppingCartOutlinedIcon />
+                  </Badge>
                 </IconButton>
                 <IconButton
                   size="medium"

@@ -5,18 +5,18 @@ export interface ProductSummaryProps {
   product: Product;
 }
 
-const ProductSummary: FC<ProductSummaryProps> = ({ product }) => {
+const ProductSummary: FC<ProductSummaryProps> = ({ product, ...rest }) => {
   const { image, title, price } = product;
   return (
-    <Stack alignItems={"center"} direction={"row"} spacing={2}>
+    <Stack alignItems={"center"} direction={"row"} spacing={2} {...rest}>
       <Box
         component={"img"}
         src={image}
         sx={{ width: 80, height: 80, borderRadius: "8px" }}
       />
       <Stack spacing={1}>
-        <Typography>{title}</Typography>
-        <Typography color={"primary"}>{price}</Typography>
+        <Typography sx={{ maxWidth: "200px" }}>{title}</Typography>
+        <Typography color={"primary"}>${price}</Typography>
       </Stack>
     </Stack>
   );

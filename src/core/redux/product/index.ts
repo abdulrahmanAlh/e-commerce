@@ -1,41 +1,75 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, ThunkAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { RootState } from "core/store";
 import { Cart, Maybe, Product } from "types";
 
 interface InitialState {
   isLoading: boolean;
+  isLoadingMore: boolean;
   products: Product[];
+  wishlist: Product[];
   cart: Cart[];
   error: Maybe<string>;
 }
 
 let initialState: InitialState = {
   isLoading: false,
+  isLoadingMore: false,
+  wishlist: [],
   products: [],
   error: null,
   cart: [],
 };
 
-const KycSlice = createSlice({
+const ProductSlice = createSlice({
   name: "Product",
   initialState,
   reducers: {
     toggleLoading: (state) => {
       state.isLoading = !state.isLoading;
     },
+    toggleLoadingMore: (state) => {
+      state.isLoadingMore = !state.isLoadingMore;
+    },
+    setProducts: (state, action: PayloadAction<Product[]>) => {
+      state.products = action.payload;
+    },
+    setProductsMore: (state, action: PayloadAction<Product[]>) => {
+      let products = state.products;
+      products = products.concat(action.payload);
+      state.products = products;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+    addToWishlist: (state, action: PayloadAction<Product>) => {
+      const isExist = state.wishlist.find(
+        (item) => item.id === action.payload.id
+      );
+      if (!isExist) state.wishlist.push(action.payload);
+      //update product
+      let index = state.products.findIndex(
+        (product) => product.id === action.payload.id
+      );
+      if (index !== -1) {
+        let products = state.products;
+        products[index] = { ...products[index], liked: true };
+        state.products = products;
+      }
+    },
+    removeFromWishlist: (state, { payload }: PayloadAction<number>) => {
+      state.wishlist = state.wishlist.filter((item) => payload !== item.id);
+      let index = state.products.findIndex((product) => product.id === payload);
+      if (index !== -1) {
+        let products = state.products;
+        products[index] = { ...products[index], liked: false };
+        state.products = products;
+      }
+    },
+
     getCart(state, action: PayloadAction<Cart[]>) {
       const cart = action.payload;
-
-      // const subtotal = sum(cart.map((cartItem: CartItem) => cartItem.price * cartItem.quantity));
-      // const discount = cart.length === 0 ? 0 : state.checkout.discount;
-      // const shipping = cart.length === 0 ? 0 : state.checkout.shipping;
-      // const billing = cart.length === 0 ? null : state.checkout.billing;
-
       state.cart = cart;
-      // state.checkout.discount = discount;
-      // state.checkout.shipping = shipping;
-      // state.checkout.billing = billing;
-      // state.checkout.subtotal = subtotal;
-      // state.checkout.total = subtotal - discount;
     },
 
     addCart(state, action: PayloadAction<Cart>) {
@@ -43,7 +77,7 @@ const KycSlice = createSlice({
       const isEmptyCart = state.cart.length === 0;
       const isExist = state.cart.find((item) => item.id === product.id);
 
-      if (isEmptyCart || isExist) {
+      if (isEmptyCart || !isExist) {
         state.cart = [...state.cart, product];
       } else {
         state.cart = state.cart.map((_product) => {
@@ -68,13 +102,7 @@ const KycSlice = createSlice({
     },
 
     resetCart(state) {
-      //   state.checkout.activeStep = 0;
       state.cart = [];
-      //   state.checkout.total = 0;
-      //   state.checkout.subtotal = 0;
-      //   state.checkout.discount = 0;
-      //   state.checkout.shipping = 0;
-      //   state.checkout.billing = null;
     },
     increaseQuantity(state, action: PayloadAction<number>) {
       const productId = action.payload;
@@ -108,6 +136,49 @@ const KycSlice = createSlice({
   },
 });
 
-export const { toggleLoading } = KycSlice.actions;
+export const {
+  toggleLoading,
+  setProducts,
+  setError,
+  toggleLoadingMore,
+  setProductsMore,
+  addCart,
+  decreaseQuantity,
+  deleteCart,
+  getCart,
+  increaseQuantity,
+  resetCart,
+  addToWishlist,
+  removeFromWishlist,
+} = ProductSlice.actions;
 
-export default KycSlice.reducer;
+export const FetchProducts =
+  (): ThunkAction<void, RootState, unknown, any> => async (dispatch) => {
+    try {
+      dispatch(toggleLoading());
+      const { data } = await axios.get("https://fakestoreapi.com/products", {
+        params: { limit: 9 },
+      });
+      dispatch(setProducts(data));
+    } catch (error) {
+      dispatch(setError("Erorr while fetching products"));
+    } finally {
+      dispatch(toggleLoading());
+    }
+  };
+
+export const FetchMoreProducts =
+  (): ThunkAction<void, RootState, unknown, any> => async (dispatch) => {
+    try {
+      dispatch(toggleLoadingMore());
+      const { data } = await axios.get("https://fakestoreapi.com/products", {
+        params: { limit: 9 },
+      });
+      dispatch(setProductsMore(data));
+    } catch (error) {
+      dispatch(setError("Erorr while fetching products"));
+    } finally {
+      dispatch(toggleLoadingMore());
+    }
+  };
+export default ProductSlice.reducer;

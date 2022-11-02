@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { Typography, Grid, Stack } from "@mui/material";
-import { Product } from "types";
+import { Typography, Stack } from "@mui/material";
+import { Cart, Product } from "types";
 import ProductSummary from "./ProductSummary";
 
 export interface ProductListSummaryProps {
   title?: string;
-  products: Product[];
+  products: (Product | Cart)[];
 }
 
 const ProductListSummary: FC<ProductListSummaryProps> = ({
@@ -13,7 +13,7 @@ const ProductListSummary: FC<ProductListSummaryProps> = ({
   products,
 }) => {
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ minWidth: 200 }}>
       {title && (
         <Typography fontWeight={800} variant="h6">
           {title}
@@ -21,7 +21,7 @@ const ProductListSummary: FC<ProductListSummaryProps> = ({
       )}
       <Stack spacing={1}>
         {products.map((product) => (
-          <ProductSummary product={product} />
+          <ProductSummary key={product.id} product={product} />
         ))}
       </Stack>
     </Stack>
