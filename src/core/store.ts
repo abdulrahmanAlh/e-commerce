@@ -1,12 +1,14 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import SettingReducer from "./redux/setting";
 import ProductReducer from "./redux/product";
+import CategoryReducer from "./redux/category";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
     Setting: SettingReducer,
     Product: ProductReducer,
+    Category: CategoryReducer,
   },
 });
 

@@ -67,11 +67,6 @@ const ProductSlice = createSlice({
       }
     },
 
-    getCart(state, action: PayloadAction<Cart[]>) {
-      const cart = action.payload;
-      state.cart = cart;
-    },
-
     addCart(state, action: PayloadAction<Cart>) {
       const product = action.payload;
       const isEmptyCart = state.cart.length === 0;
@@ -100,39 +95,6 @@ const ProductSlice = createSlice({
 
       state.cart = updateCart;
     },
-
-    resetCart(state) {
-      state.cart = [];
-    },
-    increaseQuantity(state, action: PayloadAction<number>) {
-      const productId = action.payload;
-      const updateCart = state.cart.map((product) => {
-        if (product.id === productId) {
-          return {
-            ...product,
-            quantity: product.quantity + 1,
-          };
-        }
-        return product;
-      });
-
-      state.cart = updateCart;
-    },
-
-    decreaseQuantity(state, action) {
-      const productId = action.payload;
-      const updateCart = state.cart.map((product) => {
-        if (product.id === productId) {
-          return {
-            ...product,
-            quantity: product.quantity - 1,
-          };
-        }
-        return product;
-      });
-
-      state.cart = updateCart;
-    },
   },
 });
 
@@ -143,22 +105,24 @@ export const {
   toggleLoadingMore,
   setProductsMore,
   addCart,
-  decreaseQuantity,
   deleteCart,
-  getCart,
-  increaseQuantity,
-  resetCart,
   addToWishlist,
   removeFromWishlist,
 } = ProductSlice.actions;
 
 export const FetchProducts =
-  (): ThunkAction<void, RootState, unknown, any> => async (dispatch) => {
+  (category?: string): ThunkAction<void, RootState, unknown, any> =>
+  async (dispatch) => {
     try {
       dispatch(toggleLoading());
-      const { data } = await axios.get("https://fakestoreapi.com/products", {
-        params: { limit: 9 },
-      });
+      const { data } = await axios.get(
+        `https://fakestoreapi.com/products/${
+          category ? `category/${category}` : ""
+        }`,
+        {
+          params: { limit: 9 },
+        }
+      );
       dispatch(setProducts(data));
     } catch (error) {
       dispatch(setError("Erorr while fetching products"));
@@ -181,4 +145,5 @@ export const FetchMoreProducts =
       dispatch(toggleLoadingMore());
     }
   };
+
 export default ProductSlice.reducer;

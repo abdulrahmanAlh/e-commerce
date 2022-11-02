@@ -116,7 +116,11 @@ export const Header: FC<HeaderProps> = () => {
               justifyContent="space-between"
               alignItems={"center"}
             >
-              <Stack direction={"row"} spacing={1}>
+              <Stack
+                direction={"row"}
+                spacing={1}
+                sx={{ display: { xs: "none", md: "block" } }}
+              >
                 {pages.map((page) => (
                   <Button sx={{ width: 40 }} key={page}>
                     {page}
@@ -142,11 +146,7 @@ export const Header: FC<HeaderProps> = () => {
                 </Stack>
               </Paper>
 
-              <Stack
-                direction={"row"}
-                spacing={1}
-                sx={{ display: { xs: "none", md: "block" } }}
-              >
+              <Stack direction={"row"} spacing={1}>
                 <IconButton
                   size="medium"
                   edge="start"

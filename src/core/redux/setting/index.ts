@@ -24,7 +24,7 @@ let initialState: InitialState = {
   lang: "en",
 };
 
-const KycSlice = createSlice({
+const SettingSlice = createSlice({
   name: "Setting",
   initialState,
   reducers: {
@@ -48,6 +48,6 @@ const KycSlice = createSlice({
 });
 
 export const { setDirction, toggleMode, setLang, openAlert, closeAlert } =
-  KycSlice.actions;
+  SettingSlice.actions;
 
-export default KycSlice.reducer;
+export default SettingSlice.reducer;

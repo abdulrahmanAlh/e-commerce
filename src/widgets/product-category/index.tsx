@@ -1,34 +1,58 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import LinearProgress from "@mui/material/LinearProgress";
+import { Maybe } from "types";
 
-export interface ProductCategoryProps {}
+export interface ProductCategoryProps {
+  isLoading?: boolean;
+  categories: string[];
+  onActiceCategory?: (name: string) => void;
+  onDeacticeCategory?: (name: string) => void;
+}
 
-const categories = [
-  "Coat and Jackets",
-  "Dressses",
-  "Playsuit",
-  "Short",
-  "Top",
-  "Bottoms",
-];
+const ProductCategory: FC<ProductCategoryProps> = ({
+  categories,
+  isLoading,
+  onActiceCategory,
+  onDeacticeCategory,
+}) => {
+  const [currentCategory, setCategory] = useState<Maybe<string>>(null);
 
-const ProductCategory: FC<ProductCategoryProps> = () => {
+  const handleActiceCategory = (name: string) => {
+    if (name !== currentCategory) {
+      setCategory(name);
+      onActiceCategory && onActiceCategory(name);
+    } else {
+      setCategory(null);
+      onDeacticeCategory && onDeacticeCategory(name);
+    }
+  };
   return (
     <Stack spacing={1}>
       <Typography fontWeight={800} variant="h6">
         Product Categories
       </Typography>
       <List>
-        {categories.map((category) => (
-          <ListItemButton>
-            <ListItemText primary={category} />
-            <ChevronRightOutlinedIcon />
-          </ListItemButton>
-        ))}
+        {!isLoading ? (
+          categories.map((category) => (
+            <ListItemButton
+              onClick={() => handleActiceCategory(category)}
+              key={category}
+              sx={{
+                bgcolor: currentCategory !== category ? "transparent" : "gray",
+              }}
+            >
+              <ListItemText primary={category} />
+              <ChevronRightOutlinedIcon />
+            </ListItemButton>
+          ))
+        ) : (
+          <LinearProgress />
+        )}
       </List>
     </Stack>
   );
